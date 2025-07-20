@@ -5,6 +5,9 @@ This project was generated using Google Gemini in Canvas mode.
 
 The main purpose of this project is to access RSS feeds protected by CloudFlare. I've only tested it with Miniflux, but it should also work with other RSS feed readers.
 
+## Example Usage
+Check out the `docker-compose.yml` file for an example of how to set up the proxy service.
+
 Below are the recommended settings for using this proxy with Miniflux:
 | Setting                                   | Value                     |
 | ----------------------------------------- | ------------------------- |

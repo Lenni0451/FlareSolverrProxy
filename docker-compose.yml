@@ -15,11 +15,11 @@ services:
 
   # Our new proxy service that translates and forwards requests
   flaresolverr-proxy:
-    # This tells Docker Compose to build the image from the Dockerfile in the current directory
-    build: .
+    # Use the latest image from the GitHub Container Registry
+    image: ghcr.io/lenni0451/flaresolverr-proxy:main
     container_name: flaresolverr-proxy
     ports:
-      # Expose the proxy on port 8888 on your Unraid server's IP
+      # Expose the proxy on port 8888 on your server's IP
       - "8888:8888"
     environment:
       # This is the crucial part: it tells our script where to find FlareSolverr.
