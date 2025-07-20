@@ -1,0 +1,41 @@
+name: Build and Publish Docker Image to GHCR
+
+# This action runs on every push to the 'main' branch
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-publish:
+    # Use the latest version of Ubuntu to run the job
+    runs-on: ubuntu-latest
+    # Grant permissions for the job to write to GitHub Packages
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Step 1: Check out your repository code so the workflow can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Log in to the GitHub Container Registry (GHCR)
+      # This uses a special GITHUB_TOKEN for secure authentication
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 3: Build the Docker image and push it to GHCR
+      # The 'build-push-action' will only push if the build succeeds
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Tags the image with 'latest' and a unique SHA for versioning
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/flaresolverr-proxy:latest
+            ghcr.io/${{ github.repository_owner }}/flaresolverr-proxy:${{ github.sha }}
