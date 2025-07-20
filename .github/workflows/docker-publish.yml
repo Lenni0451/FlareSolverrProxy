@@ -28,14 +28,20 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 3: Build the Docker image and push it to GHCR
+      # Step 3: Extract metadata (tags, labels) for Docker
+      # This action automatically creates tags based on the event and handles lowercasing.
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/flaresolverr-proxy
+
+      # Step 4: Build the Docker image and push it to GHCR
       # The 'build-push-action' will only push if the build succeeds
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          # Tags the image with 'latest' and a unique SHA for versioning
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/flaresolverr-proxy:latest
-            ghcr.io/${{ github.repository_owner }}/flaresolverr-proxy:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
