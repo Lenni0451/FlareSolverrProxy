@@ -1,5 +1,5 @@
 # Use a slim and official Python base image
-FROM python:3.11-slim-bullseye
+FROM python:3.13.5-slim-bullseye
 
 # Install openssl for certificate generation
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
